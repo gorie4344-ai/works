@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>席配置システム</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      background: #16213e;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    header h1 { font-size: 16px; color: #e2b04a; }
+    .hint { font-size: 11px; color: #888; margin-top: 2px; }
+
+    #floor {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background-color: #1a1a2e;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ── テーブル ── */
+    .tw {
+      position: absolute;
+      z-index: 1;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .tw.dragging { z-index: 30; filter: drop-shadow(0 6px 20px rgba(0,0,0,0.6)); }
+
+    .tc {
+      width: 150px;
+      background: #16213e;
+      border: 2px solid #e2b04a;
+      border-radius: 13px;
+      padding: 9px 10px 10px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* 合体クラス：隣接辺のボーダーをカード背景色にして消す */
+    .tc.conn-r { border-right-color:  #16213e; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+    .tc.conn-l { border-left-color:   #16213e; border-top-left-radius:  0; border-bottom-left-radius:  0; }
+    .tc.conn-b { border-bottom-color: #16213e; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+    .tc.conn-t { border-top-color:    #16213e; border-top-left-radius:   0; border-top-right-radius:    0; }
+
+    .t-num {
+      font-size: 11px;
+      color: #e2b04a;
+      font-weight: bold;
+      text-align: center;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+    }
+    .t-div {
+      height: 1px;
+      background: #e2b04a44;
+      margin: 6px 0 7px;
+    }
+    .t-res {
+      font-size: 15px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+      min-height: 22px;
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .t-res.empty {
+      font-size: 13px;
+      font-weight: normal;
+      color: #4a5568;
+    }
+    .t-seats {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 9px;
+      pointer-events: none;
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #0f1e3a;
+      border: 1.5px solid #344a6a;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .dot.occ {
+      background: #1a4a2e;
+      border-color: #4caf50;
+    }
+
+    /* ── モーダル ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 100;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .overlay.open { display: flex; }
+
+    .sheet {
+      background: #16213e;
+      border-radius: 22px 22px 0 0;
+      padding: 22px 18px 42px;
+      width: 100%;
+      max-width: 500px;
+      animation: up 0.22s ease;
+    }
+    @keyframes up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .sheet h2 {
+      font-size: 15px;
+      color: #e2b04a;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .sheet input[type="text"] {
+      display: block;
+      width: 100%;
+      background: #0f3460;
+      border: 1.5px solid #e2b04a55;
+      border-radius: 10px;
+      padding: 13px 14px;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      margin-bottom: 12px;
+    }
+    .sheet input[type="text"]:focus { border-color: #e2b04a; }
+
+    .btns { display: flex; gap: 8px; }
+    .btns button {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .b-save { background: #e2b04a; color: #1a1a2e; }
+    .b-del  { background: #c0392b; color: #fff; }
+    .b-can  { background: #2c3e50; color: #eee; }
+
+    /* ── 予約一覧 ── */
+    #sum-btn {
+      position: fixed;
+      bottom: 18px;
+      right: 14px;
+      background: #e2b04a;
+      color: #1a1a2e;
+      border: none;
+      border-radius: 50px;
+      padding: 11px 18px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.45);
+      z-index: 50;
+      touch-action: manipulation;
+    }
+
+    .sum-wrap { max-height: 55vh; overflow-y: auto; }
+    .sum-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .sum-table th { background: #0f3460; color: #e2b04a; padding: 8px 10px; text-align: left; }
+    .sum-table td { padding: 8px 10px; border-bottom: 1px solid #ffffff11; color: #ddd; }
+    .sum-table tr:last-child td { border-bottom: none; }
+    .empty-note { text-align: center; color: #555; padding: 24px 0; }
+    .close-btn {
+      display: block;
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px;
+      background: #2c3e50;
+      border: none;
+      border-radius: 10px;
+      color: #eee;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🪑 席配置システム</h1>
+    <div class="hint">ドラッグで移動・近づけると合体 ／ タップで予約入力</div>
+  </div>
+</header>
+
+<div id="floor"></div>
+
+<button id="sum-btn">予約一覧</button>
+
+<!-- 予約入力モーダル -->
+<div class="overlay" id="modal">
+  <div class="sheet">
+    <h2 id="modal-title"></h2>
+    <input type="text" id="name-input" placeholder="お客様名・予約名" maxlength="20" autocomplete="off">
+    <div class="btns">
+      <button class="b-save" id="b-save">保存</button>
+      <button class="b-del"  id="b-del">削除</button>
+      <button class="b-can"  id="b-can">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- 予約一覧 -->
+<div class="overlay" id="sum-overlay">
+  <div class="sheet">
+    <h2>📋 予約一覧</h2>
+    <div class="sum-wrap"><div id="sum-body"></div></div>
+    <button class="close-btn" id="sum-close">閉じる</button>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────
+//  定数
+// ─────────────────────────────────
+const TABLES   = 6;
+const TABLE_W  = 150;   // .tc の CSS width と一致させる
+const SNAP_D   = 44;    // スナップ距離 (px)
+const ALIGN_D  = 64;    // スナップ時の位置合わせ許容 (px)
+const CONN_TOL = 4;     // 隣接判定の許容 (px)
+
+const floor = document.getElementById('floor');
+
+// ─────────────────────────────────
+//  データ
+// ─────────────────────────────────
+let res = JSON.parse(localStorage.getItem('res4') || '{}');
+let pos = JSON.parse(localStorage.getItem('pos4') || 'null') || [
+  {x:20,  y:20 }, {x:190, y:20 },
+  {x:20,  y:170}, {x:190, y:170},
+  {x:20,  y:320}, {x:190, y:320},
+];
+
+function save() {
+  localStorage.setItem('res4', JSON.stringify(res));
+  localStorage.setItem('pos4', JSON.stringify(pos));
+}
+
+// ─────────────────────────────────
+//  テーブル要素
+// ─────────────────────────────────
+let els = []; // .tw 要素の配列
+
+function build() {
+  floor.innerHTML = '';
+  els = [];
+  for (let i = 0; i < TABLES; i++) {
+    const occ = !!res[i+1];
+    const wrap = document.createElement('div');
+    wrap.className = 'tw';
+    wrap.innerHTML = `
+      <div class="tc">
+        <div class="t-num">テーブル ${i+1}</div>
+        <div class="t-div"></div>
+        <div class="t-res${occ?'':' empty'}">${res[i+1] || '空き'}</div>
+        <div class="t-seats">
+          <span class="dot${occ?' occ':''}"></span>
+          <span class="dot${occ?' occ':''}"></span>
+          <span class="dot${occ?' occ':''}"></span>
+          <span class="dot${occ?' occ':''}"></span>
+        </div>
+      </div>`;
+    applyPos(wrap, pos[i]);
+    floor.appendChild(wrap);
+    els.push(wrap);
+    drag(wrap, i);
+  }
+  updateConn();
+}
+
+function applyPos(el, p) {
+  el.style.left = p.x + 'px';
+  el.style.top  = p.y + 'px';
+}
+
+function refreshCard(i) {
+  const occ = !!res[i+1];
+  const r = els[i].querySelector('.t-res');
+  r.textContent = res[i+1] || '空き';
+  r.className = 't-res' + (occ ? '' : ' empty');
+  els[i].querySelectorAll('.dot').forEach(d => {
+    d.className = 'dot' + (occ ? ' occ' : '');
+  });
+}
+
+// ─────────────────────────────────
+//  ドラッグ (Pointer Events)
+// ─────────────────────────────────
+function drag(wrap, idx) {
+  let sx, sy, ox, oy;
+  let moved = false;
+  let pid = null;
+
+  wrap.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    pid   = e.pointerId;
+    sx    = e.clientX; sy = e.clientY;
+    ox    = pos[idx].x; oy = pos[idx].y;
+    moved = false;
+    wrap.setPointerCapture(e.pointerId);
+  });
+
+  wrap.addEventListener('pointermove', e => {
+    if (e.pointerId !== pid) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (!moved && Math.hypot(dx, dy) > 8) {
+      moved = true;
+      wrap.classList.add('dragging');
+    }
+    if (!moved) return;
+
+    const fr = floor.getBoundingClientRect();
+    pos[idx] = {
+      x: Math.max(0, Math.min(ox + dx, fr.width  - wrap.offsetWidth)),
+      y: Math.max(0, Math.min(oy + dy, fr.height - wrap.offsetHeight)),
+    };
+    applyPos(wrap, pos[idx]);
+    updateConn();
+  });
+
+  wrap.addEventListener('pointerup', e => {
+    if (e.pointerId !== pid) return;
+    pid = null;
+    wrap.classList.remove('dragging');
+
+    if (moved) {
+      // スナップ → 保存
+      snap(idx);
+      updateConn();
+      save();
+    } else {
+      // タップ → 予約入力
+      openModal(idx + 1);
+    }
+    moved = false;
+  });
+}
+
+// ─────────────────────────────────
+//  スナップ
+// ─────────────────────────────────
+function snap(i) {
+  const W = els[i].offsetWidth;
+  const H = els[i].offsetHeight;
+  let p = { ...pos[i] };
+
+  for (let j = 0; j < TABLES; j++) {
+    if (j === i) continue;
+    const q  = pos[j];
+    const QW = els[j].offsetWidth;
+    const QH = els[j].offsetHeight;
+
+    // 右辺 → 相手の左辺
+    if (Math.abs((p.x + W) - q.x) < SNAP_D && Math.abs(p.y - q.y) < ALIGN_D) {
+      p.x = q.x - W; p.y = q.y; break;
+    }
+    // 左辺 → 相手の右辺
+    if (Math.abs(p.x - (q.x + QW)) < SNAP_D && Math.abs(p.y - q.y) < ALIGN_D) {
+      p.x = q.x + QW; p.y = q.y; break;
+    }
+    // 下辺 → 相手の上辺
+    if (Math.abs((p.y + H) - q.y) < SNAP_D && Math.abs(p.x - q.x) < ALIGN_D) {
+      p.y = q.y - H; p.x = q.x; break;
+    }
+    // 上辺 → 相手の下辺
+    if (Math.abs(p.y - (q.y + QH)) < SNAP_D && Math.abs(p.x - q.x) < ALIGN_D) {
+      p.y = q.y + QH; p.x = q.x; break;
+    }
+  }
+
+  pos[i] = p;
+  applyPos(els[i], p);
+}
+
+// ─────────────────────────────────
+//  合体ビジュアル
+// ─────────────────────────────────
+function updateConn() {
+  // 全クラスをリセット
+  els.forEach(el => {
+    el.querySelector('.tc').classList.remove('conn-r','conn-l','conn-t','conn-b');
+  });
+
+  for (let i = 0; i < TABLES; i++) {
+    for (let j = i + 1; j < TABLES; j++) {
+      const pi = pos[i], pj = pos[j];
+      const Wi = els[i].offsetWidth,  Hi = els[i].offsetHeight;
+      const Wj = els[j].offsetWidth,  Hj = els[j].offsetHeight;
+
+      // 横並び判定 (Y座標一致)
+      const yAligned = Math.abs(pi.y - pj.y) <= CONN_TOL;
+      // 縦並び判定 (X座標一致)
+      const xAligned = Math.abs(pi.x - pj.x) <= CONN_TOL;
+
+      // i の右辺 ≈ j の左辺 (i が左、j が右)
+      if (Math.abs((pi.x + Wi) - pj.x) <= CONN_TOL && yAligned) {
+        els[i].querySelector('.tc').classList.add('conn-r');
+        els[j].querySelector('.tc').classList.add('conn-l');
+      }
+      // j の右辺 ≈ i の左辺 (j が左、i が右)
+      if (Math.abs((pj.x + Wj) - pi.x) <= CONN_TOL && yAligned) {
+        els[j].querySelector('.tc').classList.add('conn-r');
+        els[i].querySelector('.tc').classList.add('conn-l');
+      }
+      // i の下辺 ≈ j の上辺 (i が上、j が下)
+      if (Math.abs((pi.y + Hi) - pj.y) <= CONN_TOL && xAligned) {
+        els[i].querySelector('.tc').classList.add('conn-b');
+        els[j].querySelector('.tc').classList.add('conn-t');
+      }
+      // j の下辺 ≈ i の上辺 (j が上、i が下)
+      if (Math.abs((pj.y + Hj) - pi.y) <= CONN_TOL && xAligned) {
+        els[j].querySelector('.tc').classList.add('conn-b');
+        els[i].querySelector('.tc').classList.add('conn-t');
+      }
+    }
+  }
+}
+
+// ─────────────────────────────────
+//  予約入力モーダル
+// ─────────────────────────────────
+let activeT = null;
+
+function openModal(t) {
+  activeT = t;
+  document.getElementById('modal-title').textContent = `テーブル ${t} の予約`;
+  document.getElementById('name-input').value = res[t] || '';
+  document.getElementById('modal').classList.add('open');
+  setTimeout(() => document.getElementById('name-input').focus(), 200);
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+
+document.getElementById('b-save').addEventListener('click', () => {
+  const name = document.getElementById('name-input').value.trim();
+  if (name) res[activeT] = name;
+  else delete res[activeT];
+  save();
+  refreshCard(activeT - 1);
+  closeModal();
+});
+document.getElementById('b-del').addEventListener('click', () => {
+  delete res[activeT];
+  save();
+  refreshCard(activeT - 1);
+  closeModal();
+});
+document.getElementById('b-can').addEventListener('click', closeModal);
+document.getElementById('modal').addEventListener('pointerdown', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+document.getElementById('name-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('b-save').click();
+});
+
+// ─────────────────────────────────
+//  予約一覧
+// ─────────────────────────────────
+document.getElementById('sum-btn').addEventListener('click', () => {
+  const keys = Object.keys(res).map(Number).sort((a,b) => a - b);
+  let html;
+  if (keys.length === 0) {
+    html = '<p class="empty-note">予約がありません</p>';
+  } else {
+    html = `<table class="sum-table">
+      <thead><tr><th>テーブル</th><th>予約名</th></tr></thead><tbody>`;
+    keys.forEach(k => {
+      html += `<tr><td>テーブル ${k}</td><td>${res[k]}</td></tr>`;
+    });
+    html += '</tbody></table>';
+  }
+  document.getElementById('sum-body').innerHTML = html;
+  document.getElementById('sum-overlay').classList.add('open');
+});
+document.getElementById('sum-close').addEventListener('click', () => {
+  document.getElementById('sum-overlay').classList.remove('open');
+});
+document.getElementById('sum-overlay').addEventListener('pointerdown', e => {
+  if (e.target === document.getElementById('sum-overlay'))
+    document.getElementById('sum-overlay').classList.remove('open');
+});
+
+// ─────────────────────────────────
+//  初期化
+// ─────────────────────────────────
+build();
+</script>
+</body>
+</html>
