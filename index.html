@@ -8,132 +8,176 @@
 <meta property="og:title" content="gorie Works — 悩みの奥まで、仕組みで解く">
 <meta property="og:description" content="飲食店の席配置、BtoB営業リスト、地域事業者向けHP提案、介護法人の月次財務分析。4つの制作実績と、それぞれが解決する顕在・潜在の悩み。">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#f6f3ec">
+<meta name="theme-color" content="#0B1426">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@600;700;800&family=Cormorant+Garamond:ital,wght@1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* 夜の灯りで始まり、明るい本文で読ませ、夜の灯りで終わる */
 :root{
-  --paper:#f6f3ec;--paper2:#efebe1;--card:#fffdf8;--ink:#1d2330;--muted:#5d6370;--faint:#8b8f97;--line:#ddd7ca;
-  --water:#1f3a52;--water2:#2b5070;
+  --night:#0B1426;--night-2:#13213D;--night-3:#1B2C4F;--lamp:#F2C14E;--lamp-soft:#E9D9B0;--ivory:#F6F1E6;--ivory-2:#C9CED9;--mist:#9AA3B5;
+  --paper:#FBF8F2;--paper-2:#F3EEE4;--card:#fff;--ink:#1C2230;--muted:#4A5162;--faint:#858b98;--line:#E2DCCF;
+  --gold-ink:#8A6420;--green:#0A6B50;--green-dark:#085640;
+  --water:#13213D;
   --seat:#b98a2b;--seat-bg:#1a1a2e;--seat-card:#16213e;
   --sales:#2f5d8a;--sales-bg:#e3ebf3;
   --hp:#b9532f;--hp-bg:#f3e3da;
   --fin:#2a7464;--fin-bg:#dcece6;
-  --serif:'Zen Old Mincho',serif;--sans:'Noto Sans JP',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --sans:'Noto Sans JP',system-ui,sans-serif;--serif:'Shippori Mincho B1','Noto Serif JP',serif;--latin:'Cormorant Garamond','Shippori Mincho B1',serif;--mono:'IBM Plex Mono',monospace;
+  --radius:18px;--shadow:0 30px 60px -32px rgba(11,20,38,.35)
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.9;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.9;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{word-break:auto-phrase;text-wrap:pretty;line-break:strict;font-feature-settings:"palt"}
 a{color:inherit}
 img{max-width:100%}
-.wrap{max-width:1160px;margin:0 auto;padding:0 40px}
+.wrap{max-width:1220px;margin:0 auto;padding:0 20px}
 .mono{font-family:var(--mono);letter-spacing:.06em}
-a:focus-visible,button:focus-visible{outline:3px solid var(--sales);outline-offset:4px}
+:focus-visible{outline:3px solid var(--lamp);outline-offset:4px;border-radius:6px}
+::selection{background:#F7E3A8;color:var(--ink)}
+.skip-link{position:fixed;left:12px;top:-80px;z-index:200;padding:10px 16px;background:var(--lamp);color:var(--night);border-radius:8px;font-weight:700;text-decoration:none}
+.skip-link:focus{top:12px}
 
-/* header */
-header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.nav{height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.logo{font-family:var(--serif);font-weight:900;font-size:24px;text-decoration:none;letter-spacing:-.02em}
-.logo span{color:var(--hp)}
-.nav nav{display:flex;gap:28px;font-size:13px}
-.nav nav a{text-decoration:none;color:var(--muted)}
-.nav nav a:hover{color:var(--ink)}
+/* kicker（見出しの型） */
+.kicker{display:flex;align-items:center;gap:12px;color:var(--gold-ink);font-size:13px;font-weight:700;letter-spacing:.12em;margin:0 0 18px}
+.kicker span{font-family:var(--latin);font-style:italic;font-weight:500;font-size:26px;letter-spacing:0;line-height:1}
+.kicker::after{content:"";width:48px;height:1px;background:currentColor;opacity:.6}
+.on-night .kicker{color:var(--lamp-soft)}
 
-/* hero */
-.hero{padding:88px 0 72px}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
-.eyebrow{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:10px}
-.eyebrow:before{content:"";width:28px;height:1px;background:var(--ink)}
-h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,4.6vw,60px);line-height:1.45;letter-spacing:-.01em;margin:22px 0 26px}
-h1 em{font-style:normal;background:linear-gradient(transparent 62%,#f0d9a8 62%)}
-.lead{color:var(--muted);max-width:520px;margin:0 0 34px}
-.btn{display:inline-flex;align-items:center;gap:18px;background:var(--ink);color:#fff;text-decoration:none;padding:15px 22px;border-radius:999px;font-size:13px;font-weight:500;transition:transform .2s}
-.btn:hover{transform:translateY(-2px)}
+/* buttons */
+.button{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:56px;padding:0 30px;border-radius:999px;background:var(--green);color:#fff;font-weight:700;font-size:15px;letter-spacing:.04em;text-decoration:none;box-shadow:0 14px 30px -16px rgba(10,107,80,.7);transition:transform .25s ease,background .25s ease}
+.button:hover{background:var(--green-dark);transform:translateY(-2px)}
+.button-lamp{background:var(--lamp);color:var(--night);box-shadow:0 0 0 1px rgba(242,193,78,.4),0 18px 44px -14px rgba(242,193,78,.65)}
+.button-lamp:hover{background:#F7D27A}
+.text-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;line-height:1.4}
+.text-link-night{color:var(--ivory)}
 
-/* iceberg */
-.berg{position:relative;aspect-ratio:1/1.05;border-radius:18px;overflow:hidden;background:linear-gradient(#f6f3ec 0 34%,var(--water) 34% 100%);border:1px solid var(--line)}
+/* header（夜の上では紺、スクロール後は明るく） */
+.site-header{position:fixed;inset:0 0 auto;z-index:50;background:rgba(11,20,38,.94);color:var(--ivory);transition:background .35s ease,color .35s ease,box-shadow .35s ease}
+.site-header.is-light{background:rgba(251,248,242,.96);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:flex;flex-direction:column;line-height:1.1;text-decoration:none}
+.logo b{font-family:var(--latin);font-style:italic;font-weight:500;font-size:28px;letter-spacing:.01em}
+.logo b i{color:var(--lamp)}
+.is-light .logo b i{color:var(--gold-ink)}
+.logo small{font-size:11px;letter-spacing:.2em;opacity:.8;margin-top:2px}
+.nav nav{display:flex;gap:4px;font-size:14px}
+.nav nav a{text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;border-radius:999px;transition:background .2s}
+.nav nav a:hover{background:rgba(255,255,255,.08)}
+.is-light .nav nav a:hover{background:var(--paper-2)}
+.reading-progress{height:2px}
+.reading-progress span{display:block;height:100%;background:var(--lamp);transform-origin:left;transform:scaleX(0)}
+
+/* hero（夜） */
+.hero{position:relative;background:radial-gradient(ellipse 60% 70% at 78% 40%,rgba(242,193,78,.13),transparent 70%),linear-gradient(180deg,var(--night) 0%,var(--night-2) 100%);color:var(--ivory);min-height:min(100svh,920px);display:flex;align-items:center;padding:128px 0 88px;overflow:hidden;isolation:isolate}
+.hero-lights{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;mix-blend-mode:screen}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:center;width:100%}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:14px;font-weight:700;letter-spacing:.1em;color:var(--lamp-soft);margin:0 0 26px}
+.star-dot{width:14px;height:14px;flex:none;background:var(--lamp);clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%);filter:drop-shadow(0 0 6px rgba(242,193,78,.9))}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.2rem,1.1rem + 4vw,4.3rem);line-height:1.38;letter-spacing:.05em;margin:0;color:var(--ivory)}
+h1 em{font-style:normal;color:var(--lamp);display:inline-block}
+.lead{margin:28px 0 0;font-size:clamp(15px,.9rem + .3vw,18px);line-height:2;color:var(--ivory-2);max-width:32em}
+.hero-facts{display:flex;flex-wrap:wrap;list-style:none;padding:0;margin:36px 0 0;max-width:640px}
+.hero-facts li{flex:1 1 0;min-width:150px;padding:4px 20px 4px 18px;border-left:1px solid rgba(242,193,78,.45);display:flex;flex-direction:column;gap:2px}
+.hero-facts strong{font-family:var(--serif);font-size:22px;color:var(--ivory);line-height:1.4}
+.hero-facts span{font-size:13px;color:var(--ivory-2);line-height:1.6}
+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin-top:40px}
+.hero-actions .button{min-height:60px;font-size:16px;padding:0 34px}
+
+/* iceberg（夜の水面） */
+.berg{position:relative;aspect-ratio:1/1.08;border-radius:var(--radius);overflow:hidden;background:linear-gradient(rgba(27,44,79,.55) 0 34%,#0a1730 34% 100%);border:1px solid rgba(242,193,78,.22);box-shadow:0 40px 80px -40px rgba(0,0,0,.6)}
 .berg svg{position:absolute;inset:0;width:100%;height:100%}
-.berg .tag{position:absolute;font-size:12px;line-height:1.6;padding:8px 12px;border-radius:8px;max-width:58%}
-.berg .t-top{top:7%;right:6%;background:var(--card);border:1px solid var(--line)}
-.berg .t-bot{bottom:7%;left:6%;background:rgba(255,255,255,.1);color:#e9eef3;border:1px solid rgba(255,255,255,.22)}
-.berg .t-top b,.berg .t-bot b{display:block;font-size:10px;font-family:var(--mono);letter-spacing:.1em;font-weight:500;opacity:.75}
-.berg .wl{position:absolute;top:34%;left:0;right:0;transform:translateY(-50%);text-align:right;padding-right:16px;font-size:10px;color:#cfdbe6;font-family:var(--mono);margin-top:12px}
+.berg .tag{position:absolute;font-size:12px;line-height:1.65;padding:9px 13px;border-radius:10px;max-width:60%}
+.berg .t-top{top:7%;right:6%;background:var(--ivory);color:var(--ink)}
+.berg .t-bot{bottom:7%;left:6%;background:rgba(255,255,255,.07);color:var(--ivory-2);border:1px solid rgba(242,193,78,.35)}
+.berg .tag b{display:block;font-size:10px;font-family:var(--mono);letter-spacing:.1em;font-weight:500;color:var(--gold-ink)}
+.berg .t-bot b{color:var(--lamp)}
+.berg .wl{position:absolute;top:34%;left:0;right:0;text-align:right;padding-right:16px;font-size:10px;color:var(--lamp-soft);font-family:var(--mono);margin-top:6px;opacity:.75}
 
-/* index list */
-.index{margin-top:64px;border-top:1px solid var(--ink);display:grid;grid-template-columns:repeat(4,1fr)}
-.index a{text-decoration:none;padding:20px 20px 22px 0;border-right:1px solid var(--line);display:block}
-.index a+a{padding-left:20px}
-.index a:last-child{border-right:0}
-.index .n{font-size:11px;color:var(--faint)}
-.index .t{display:block;font-family:var(--serif);font-weight:700;font-size:18px;margin:6px 0 4px}
-.index .w{font-size:12px;color:var(--muted);line-height:1.7}
-.index a:hover .t{text-decoration:underline;text-underline-offset:5px}
-.dotc{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px}
+/* works index */
+.works{padding:clamp(72px,9vw,120px) 0 clamp(48px,6vw,72px)}
+.sec-head{display:grid;grid-template-columns:1fr minmax(0,420px);gap:32px;align-items:end;margin-bottom:clamp(36px,5vw,56px)}
+.sec-head h2{font-family:var(--serif);font-size:clamp(1.8rem,1.15rem + 2.2vw,2.8rem);line-height:1.45;letter-spacing:.04em;margin:0}
+.sec-head p{margin:0;color:var(--muted)}
+.index{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.index a{text-decoration:none;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px 24px;border-top:4px solid var(--c);transition:transform .25s ease,box-shadow .25s ease}
+.index a:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.index .n{font-size:12px;color:var(--faint)}
+.index .n b{font-family:var(--latin);font-style:italic;font-weight:500;font-size:30px;color:var(--c);margin-right:8px;vertical-align:-3px}
+.index .t{display:block;font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.55;margin:12px 0 6px}
+.index .w{font-size:13px;color:var(--muted);line-height:1.8;flex:1}
+.index .go{margin-top:16px;font-size:12px;font-weight:700;color:var(--c)}
 
 /* how to read */
-.howto{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:48px 0}
-.howto-grid{display:grid;grid-template-columns:1fr 2fr;gap:48px;align-items:start}
-.howto h2{font-family:var(--serif);font-size:24px;margin:0;line-height:1.6}
+.howto{background:var(--paper-2);padding:clamp(56px,7vw,88px) 0}
+.howto-grid{display:grid;grid-template-columns:.8fr 2fr;gap:48px;align-items:start}
+.howto h2{font-family:var(--serif);font-size:clamp(1.4rem,1rem + 1.2vw,1.9rem);margin:0;line-height:1.6;letter-spacing:.04em}
 .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.legend div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
-.legend b{display:block;font-size:14px;margin-bottom:4px}
-.legend p{margin:0;font-size:13px;color:var(--muted);line-height:1.8}
-.legend .k{font-size:10px;color:var(--faint)}
+.legend div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.legend b{display:block;font-family:var(--serif);font-size:17px;margin:2px 0 6px}
+.legend p{margin:0;font-size:14px;color:var(--muted);line-height:1.85}
+.legend .k{font-size:10px;color:var(--gold-ink)}
+.legend .dk{background:var(--night);color:var(--ivory);border-color:var(--night)}
+.legend .dk .k{color:var(--lamp)}
+.legend .dk p{color:var(--ivory-2)}
 
 /* case */
-.case{padding:110px 0 100px;border-bottom:1px solid var(--line)}
+.case{padding:clamp(80px,10vw,136px) 0 clamp(72px,9vw,112px);border-bottom:1px solid var(--line)}
 .case-head{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:end;margin-bottom:48px}
-.case-no{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted)}
-.case-no .big{font-family:var(--serif);font-size:64px;line-height:1;color:var(--acc);font-weight:900}
-.case h2{font-family:var(--serif);font-weight:700;font-size:clamp(23px,3.1vw,38px);line-height:1.5;margin:18px 0 0}
+.case-no{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--muted)}
+.case-no .big{font-family:var(--latin);font-style:italic;font-size:76px;line-height:.9;color:var(--acc);font-weight:500}
+.case h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,1rem + 2vw,2.4rem);line-height:1.5;letter-spacing:.03em;margin:18px 0 0}
 .case h2 .ln{display:inline-block}
 .case-sub{color:var(--muted);margin:0}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.chip{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:3px 11px;background:var(--card);color:var(--muted)}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 12px;background:var(--card);color:var(--muted)}
 
 .case-body{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
-.visual{border-radius:16px;background:var(--vbg);padding:34px;min-height:380px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.visual{border-radius:var(--radius);background:var(--vbg);padding:34px;min-height:380px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .visual .cap{position:absolute;left:18px;bottom:12px;font-size:10px;color:var(--muted);font-family:var(--mono)}
 .what h3,.block-title{font-size:11px;font-family:var(--mono);letter-spacing:.12em;color:var(--acc);margin:0 0 10px;font-weight:500}
 .what p{margin:0 0 18px}
 .feat{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
-.feat li{padding:11px 0 11px 26px;border-bottom:1px solid var(--line);font-size:14px;position:relative;line-height:1.75}
-.feat li:before{content:"";position:absolute;left:4px;top:20px;width:10px;height:2px;background:var(--acc)}
-.feat li small{display:block;color:var(--muted);font-size:12px}
+.feat li{padding:12px 0 12px 26px;border-bottom:1px solid var(--line);font-size:15px;position:relative;line-height:1.75}
+.feat li:before{content:"";position:absolute;left:4px;top:23px;width:8px;height:8px;border-radius:50%;background:var(--acc)}
+.feat li small{display:block;color:var(--muted);font-size:13px}
 
-.persona{margin-top:56px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px}
+.persona{margin-top:56px;display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 28px}
 .avatar{width:58px;height:58px;border-radius:50%;background:var(--vbg);display:grid;place-items:center;color:var(--acc)}
 .avatar svg{width:30px;height:30px}
 .persona b{font-size:16px}
-.persona p{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.8}
+.persona p{margin:2px 0 0;font-size:14px;color:var(--muted);line-height:1.8}
 
-.pains{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
-.pain{padding:30px 30px 32px}
+.pains{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+.pain{padding:32px 32px 34px}
 .pain.surface{background:var(--card)}
-.pain.deep{background:var(--water);color:#e8eef3}
-.pain h4{margin:0 0 4px;font-family:var(--serif);font-size:20px;font-weight:700}
-.pain .hint{font-size:12px;margin:0 0 18px;opacity:.72}
+.pain.deep{background:var(--night);color:var(--ivory-2);position:relative}
+.pain.deep:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(rgba(242,193,78,.18),transparent 70%);pointer-events:none}
+.pain h4{margin:0 0 4px;font-family:var(--serif);font-size:21px;font-weight:700}
+.pain.deep h4{color:var(--ivory)}
+.pain .hint{font-size:12px;margin:0 0 18px;opacity:.75}
 .pain ul{list-style:none;margin:0;padding:0}
-.pain.surface li{background:var(--paper);border-radius:4px 14px 14px 14px;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.75}
+.pain.surface li{background:var(--paper-2);border-radius:4px 14px 14px 14px;padding:10px 14px;margin-bottom:10px;font-size:14px;line-height:1.75}
 .pain.surface li:before{content:"「"}
 .pain.surface li:after{content:"」"}
-.pain.deep li{padding:10px 0 10px 28px;border-bottom:1px solid rgba(255,255,255,.14);font-size:14px;line-height:1.8;position:relative}
+.pain.deep li{padding:11px 0 11px 28px;border-bottom:1px solid rgba(255,255,255,.1);font-size:14px;line-height:1.85;position:relative}
 .pain.deep li:last-child{border-bottom:0}
-.pain.deep li:before{content:"↓";position:absolute;left:4px;top:10px;color:#9fc2dc;font-family:var(--mono)}
-.pain.deep li b{color:#fff;font-weight:700}
+.pain.deep li:before{content:"";position:absolute;left:4px;top:19px;width:10px;height:10px;background:var(--lamp);clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%)}
+.pain.deep li b{color:var(--lamp-soft);font-weight:700}
 
-.ba{margin-top:22px;display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch}
-.ba div.col{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.ba{margin-top:22px;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch}
+.ba div.col{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px}
 .ba .after{border-color:var(--acc);box-shadow:inset 4px 0 0 var(--acc)}
 .ba .lbl{font-size:10px;font-family:var(--mono);letter-spacing:.12em;color:var(--faint)}
 .ba .after .lbl{color:var(--acc)}
-.ba p{margin:6px 0 0;font-size:14px}
+.ba p{margin:6px 0 0;font-size:15px}
 .ba .arrow{display:grid;place-items:center;padding:0 14px;color:var(--acc);font-size:22px}
-.foot-row{margin-top:22px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between}
-.tech{font-size:12px;color:var(--muted)}
+.foot-row{margin-top:24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between}
+.tech{font-size:13px;color:var(--muted);margin:0}
 .tech b{font-family:var(--mono);font-weight:500;color:var(--ink);font-size:11px;letter-spacing:.08em;margin-right:8px}
-.demo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:13px;font-weight:700;background:var(--acc);color:#fff;padding:11px 18px;border-radius:999px}
+.demo{display:inline-flex;align-items:center;gap:10px;min-height:48px;text-decoration:none;font-size:14px;font-weight:700;background:var(--acc);color:#fff;padding:0 22px;border-radius:999px;transition:transform .25s}
+.demo:hover{transform:translateY(-2px)}
 .note{font-size:12px;color:var(--faint);margin:14px 0 0}
 
 /* per case accent */
@@ -144,7 +188,7 @@ h1 em{font-style:normal;background:linear-gradient(transparent 62%,#f0d9a8 62%)}
 
 /* mock: seat */
 .phone{width:230px;background:#0e0e1a;border-radius:30px;padding:10px;box-shadow:0 30px 50px rgba(26,26,46,.28);transform:rotate(-4deg)}
-.screen{background:var(--seat-bg);border-radius:22px;height:420px;padding:16px 12px;position:relative;overflow:hidden}
+.screen{background:var(--seat-bg);border-radius:22px;height:420px;padding:16px 12px;position:relative;overflow:hidden;line-height:1.5}
 .screen .bar{color:#e2b04a;font-size:11px;font-weight:700;display:flex;justify-content:space-between;margin-bottom:16px}
 .screen .bar span{color:#8b8fa8;font-weight:400}
 .tb{position:absolute;width:86px;height:58px;background:var(--seat-card);border:1.5px solid #34406a;border-radius:8px;color:#cfd3e6;font-size:9px;padding:6px 8px}
@@ -157,7 +201,7 @@ h1 em{font-style:normal;background:linear-gradient(transparent 62%,#f0d9a8 62%)}
 .drag{position:absolute;width:28px;height:28px;border-radius:50%;background:rgba(226,176,74,.25);border:1.5px solid #e2b04a}
 
 /* mock: sheet */
-.sheet{width:100%;max-width:470px;background:#fff;border-radius:10px;box-shadow:0 22px 44px rgba(47,93,138,.18);overflow:hidden;font-size:11px;transform:rotate(1.5deg)}
+.sheet{width:100%;max-width:470px;background:#fff;border-radius:10px;box-shadow:0 22px 44px rgba(47,93,138,.18);overflow:hidden;font-size:11px;line-height:1.6;transform:rotate(1.5deg)}
 .sheet .tabs{display:flex;gap:2px;background:#eef2f6;padding:6px 8px 0;font-size:10px}
 .sheet .tabs span{padding:5px 10px;border-radius:6px 6px 0 0;color:#6b7785}
 .sheet .tabs span.on{background:#fff;color:var(--sales);font-weight:700}
@@ -174,7 +218,7 @@ h1 em{font-style:normal;background:linear-gradient(transparent 62%,#f0d9a8 62%)}
 .mails b{color:var(--sales);display:block;font-family:var(--mono)}
 
 /* mock: hp */
-.hpmock{position:relative;width:100%;max-width:440px;height:330px}
+.hpmock{position:relative;width:100%;max-width:440px;height:330px;line-height:1.6}
 .site{position:absolute;left:0;top:0;width:78%;background:#fff;border-radius:10px;box-shadow:0 20px 40px rgba(120,60,30,.18);overflow:hidden}
 .site .chrome{height:24px;background:#f1ece8;display:flex;align-items:center;gap:5px;padding:0 10px}
 .site .chrome i{width:7px;height:7px;border-radius:50%;background:#d6cbc3}
@@ -195,7 +239,7 @@ h1 em{font-style:normal;background:linear-gradient(transparent 62%,#f0d9a8 62%)}
 .flowline span{background:#fff;border:1px solid #e3cfc2;border-radius:999px;padding:2px 8px;color:#8a5a44}
 
 /* mock: fin */
-.report{width:100%;max-width:460px;background:#fff;border-radius:10px;box-shadow:0 22px 44px rgba(42,116,100,.18);padding:20px 22px;transform:rotate(-1.5deg)}
+.report{width:100%;max-width:460px;background:#fff;border-radius:10px;box-shadow:0 22px 44px rgba(42,116,100,.18);padding:20px 22px;transform:rotate(-1.5deg);line-height:1.6}
 .report .rt{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #1f3a52;padding-bottom:8px}
 .report .rt b{font-size:13px}
 .report .rt span{font-size:9px;color:var(--faint);font-family:var(--mono)}
@@ -214,53 +258,74 @@ h1 em{font-style:normal;background:linear-gradient(transparent 62%,#f0d9a8 62%)}
 .advice{margin-top:12px;background:#fdf6e7;border-left:3px solid #d29a2c;padding:8px 10px;font-size:10.5px;line-height:1.7;color:#5c4a24}
 .advice b{display:block;font-size:9px;font-family:var(--mono);letter-spacing:.08em;color:#a77412}
 
-/* approach */
-.approach{background:var(--ink);color:#e9e6de;padding:100px 0}
-.approach h2{font-family:var(--serif);font-size:clamp(26px,3vw,38px);margin:14px 0 0;line-height:1.5;font-weight:700}
-.approach .eyebrow{color:#a8adb8}.approach .eyebrow:before{background:#a8adb8}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:56px}
-.step{border-top:1px solid #4a5160;padding-top:22px}
-.step .mono{font-size:11px;color:#f0d9a8}
-.step h3{font-family:var(--serif);font-size:20px;margin:12px 0 10px;font-weight:700}
-.step p{margin:0;font-size:14px;color:#b7bcc6}
+/* bridge（中間のひと言） */
+.bridge{padding:clamp(64px,8vw,104px) 0;text-align:center}
+.bridge p{margin:0 auto;max-width:880px;font-family:var(--serif);font-size:clamp(1.25rem,1rem + 1.1vw,1.8rem);line-height:1.9;letter-spacing:.04em;word-break:auto-phrase}
+.bridge strong{background:linear-gradient(transparent 62%,rgba(242,193,78,.45) 62%)}
 
-.about{padding:100px 0}
+/* approach */
+.approach{background:var(--paper-2);padding:clamp(72px,10vw,130px) 0}
+.approach h2{font-family:var(--serif);font-size:clamp(1.8rem,1.15rem + 2.2vw,2.8rem);margin:0;line-height:1.45;font-weight:700;letter-spacing:.04em}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.step{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--green);border-radius:var(--radius);padding:30px 28px}
+.step .mono{font-size:11px;color:var(--gold-ink)}
+.step h3{font-family:var(--serif);font-size:21px;margin:12px 0 10px;font-weight:700;line-height:1.55}
+.step p{margin:0;font-size:15px;color:var(--muted)}
+
+/* about */
+.about{padding:clamp(72px,10vw,130px) 0}
 .about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px}
-.about h2{font-family:var(--serif);font-size:clamp(24px,2.8vw,34px);line-height:1.6;margin:14px 0 0}
-.about p{color:var(--muted);margin:0 0 16px}
-.about strong{color:var(--ink)}
-.profile{display:flex;gap:16px;align-items:center;margin-top:28px}
-.profile .av{width:52px;height:52px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--serif);font-weight:900;font-size:22px}
-.profile small{display:block;color:var(--muted);font-size:12px}
-footer{border-top:1px solid var(--line);padding:26px 0;font-size:12px;color:var(--muted)}
+.about h2{font-family:var(--serif);font-size:clamp(1.6rem,1.1rem + 1.8vw,2.4rem);line-height:1.6;margin:0;letter-spacing:.04em}
+.about p{color:var(--muted);margin:0 0 18px}
+.about strong{color:var(--ink);background:linear-gradient(transparent 62%,rgba(242,193,78,.4) 62%)}
+.profile{display:flex;gap:16px;align-items:center;margin-top:32px}
+.profile .av{width:56px;height:56px;border-radius:50%;background:var(--night);color:var(--lamp);display:grid;place-items:center;font-family:var(--latin);font-style:italic;font-size:26px}
+.profile small{display:block;color:var(--muted);font-size:13px}
+
+/* final（夜） */
+.final{position:relative;background:radial-gradient(ellipse 55% 60% at 50% 100%,rgba(242,193,78,.2),transparent 70%),var(--night);color:var(--ivory);padding:clamp(96px,12vw,160px) 0;text-align:center;overflow:hidden;isolation:isolate}
+.final .kicker{justify-content:center}
+.final .kicker::before{content:"";width:48px;height:1px;background:currentColor;opacity:.6}
+.final h2{font-family:var(--serif);font-size:clamp(2rem,1.2rem + 3.2vw,3.6rem);line-height:1.4;letter-spacing:.05em;margin:0}
+.final h2 em{font-style:normal;color:var(--lamp)}
+.final p.sub{margin:24px auto 0;color:var(--ivory-2);max-width:34em}
+.final .acts{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 28px;margin-top:40px}
+footer{background:var(--night);color:var(--mist);border-top:1px solid rgba(255,255,255,.08);padding:26px 0;font-size:13px}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer a{text-decoration:none}
+footer a:hover{color:var(--ivory)}
 
-@media (max-width:960px){
-  .wrap{padding:0 28px}
-  .hero-grid,.case-head,.case-body,.howto-grid,.about-grid{grid-template-columns:1fr;gap:36px}
-  .berg{max-width:440px;aspect-ratio:1/.9}
+/* 出てくる動き */
+.motion-ready .reveal.is-pending{opacity:0;transform:translateY(28px)}
+.motion-ready .reveal{transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+
+@media (max-width:980px){
+  .nav nav{display:none}
+  .hero-grid,.case-head,.case-body,.howto-grid,.about-grid,.sec-head{grid-template-columns:1fr;gap:36px}
+  .sec-head{gap:16px}
+  .berg{max-width:460px;aspect-ratio:1/.9}
   .index{grid-template-columns:1fr 1fr}
-  .index a:nth-child(2){border-right:0}
-  .index a:nth-child(3){padding-left:0}
-  .index a:nth-child(n+3){border-top:1px solid var(--line)}
   .legend{grid-template-columns:1fr}
-  .steps{grid-template-columns:1fr;gap:28px}
+  .steps{grid-template-columns:1fr;gap:16px}
 }
 @media (max-width:640px){
-  body{font-size:14px}
+  body{font-size:15px}
   .wrap{padding:0 16px}
-  .nav nav{gap:16px;font-size:12px}
-  .nav nav a.hide-sm{display:none}
-  .hero{padding:48px 0 48px}
-  .index{grid-template-columns:1fr}
-  .index a,.index a+a{padding:16px 0;border-right:0;border-top:1px solid var(--line)}
-  .index a:first-child{border-top:0}
-  .case{padding:72px 0 64px}
-  .case-no .big{font-size:48px}
+  .nav{height:64px}
+  .hero{min-height:auto;padding:100px 0 64px}
+  .hero-eyebrow{font-size:12px;margin-bottom:16px;letter-spacing:.05em}
+  .lead{margin-top:18px;font-size:15px;line-height:1.9}
+  .hero-facts{margin-top:22px;flex-direction:column;gap:6px}
+  .hero-facts li{flex:none;min-width:0;padding:0 0 0 12px;flex-direction:row;align-items:baseline;gap:10px}
+  .hero-facts strong{font-size:17px;white-space:nowrap}
+  .hero-actions{gap:4px 20px;margin-top:28px}
+  .hero-actions .button{width:100%}
+  .index{grid-template-columns:1fr;gap:12px}
+  .index a{padding:20px}
+  .case-no .big{font-size:60px}
   .visual{padding:24px 14px 34px;min-height:320px}
   .pains{grid-template-columns:1fr}
-  .pain{padding:24px 20px}
+  .pain{padding:26px 20px}
   .ba{grid-template-columns:1fr}
   .ba .arrow{transform:rotate(90deg);padding:6px 0}
   .persona{grid-template-columns:1fr;padding:20px}
@@ -270,65 +335,98 @@ footer a{text-decoration:none}
   .site{width:88%}
   .prop{width:58%}
   .report{transform:none;padding:16px}
-  .approach,.about{padding:72px 0}
+  .bridge{text-align:left}
+  .final .acts .button{width:100%}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .button,.demo,.index a{transition:none}
+  .motion-ready .reveal.is-pending{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#works">本文へ移動</a>
 
-<header>
+<header class="site-header" id="header">
   <div class="wrap nav">
-    <a class="logo" href="#top">gorie<span>.</span></a>
+    <a class="logo" href="#top"><b>gorie<i>.</i></b><small>WORKS</small></a>
     <nav aria-label="メイン">
       <a href="#works">制作実績</a>
-      <a href="#approach" class="hide-sm">作り方</a>
+      <a href="#approach">作り方</a>
       <a href="#about">プロフィール</a>
     </nav>
   </div>
+  <div class="reading-progress" aria-hidden="true"><span id="progress"></span></div>
 </header>
 
 <main id="top">
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <p class="eyebrow mono">PORTFOLIO — 4 SYSTEMS</p>
-        <h1>「困った」の、<br><em>その奥</em>まで<br>仕組みで解く。</h1>
-        <p class="lead">口に出している悩みは、氷山の一角です。その下には、本人もまだ言葉にしていない課題が沈んでいます。現場で働きながら、AIとコードを使って、両方に届く道具を作ってきました。ここでは、その中から4つを紹介します。</p>
-        <a class="btn" href="#works">4つのシステムを見る <span aria-hidden="true">↓</span></a>
-      </div>
-      <div class="berg" role="img" aria-label="悩みの氷山の図。水面の上は顕在的な悩み、水面の下は潜在的な悩み">
-        <svg viewBox="0 0 400 420" preserveAspectRatio="none" aria-hidden="true">
-          <polygon points="170,58 205,40 240,70 262,143 138,143" fill="#fffdf8" stroke="#1d2330" stroke-width="1.5"/>
-          <polygon points="138,143 262,143 318,210 336,300 280,382 170,398 92,340 70,250" fill="#3c6486" opacity=".75"/>
-          <polygon points="138,143 262,143 300,200 250,180 180,196 110,200" fill="#5d84a6" opacity=".55"/>
-          <path d="M0 143 Q 50 136 100 143 T 200 143 T 300 143 T 400 143" fill="none" stroke="#cfdbe6" stroke-width="1.5"/>
-        </svg>
-        <div class="tag t-top"><b>顕在的な悩み</b>「手間がかかる」「時間がない」<br>本人が口にしている困りごと</div>
-        <span class="wl">— WATERLINE —</span>
-        <div class="tag t-bot"><b>潜在的な悩み</b>属人化、信用リスク、気づけない損失。<br>まだ言葉になっていない、本当の課題</div>
+<!-- HERO（夜） -->
+<section class="hero on-night" aria-labelledby="hero-title">
+  <canvas class="hero-lights" id="heroLights" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="hero-eyebrow"><span class="star-dot" aria-hidden="true"></span><span>PORTFOLIO ｜ 4 SYSTEMS</span></p>
+      <h1 id="hero-title">「困った」の、<br><em>その奥</em>まで<br>仕組みで解く。</h1>
+      <p class="lead">口に出している悩みは、氷山の一角です。その下には、本人もまだ言葉にしていない課題が沈んでいます。現場で働きながら、AIとコードを使って、両方に届く道具を作ってきました。ここでは、その中から4つを紹介します。</p>
+      <ul class="hero-facts">
+        <li><strong>4つ</strong><span>制作実績</span></li>
+        <li><strong>4分野</strong><span>飲食・営業・Web・財務</span></li>
+        <li><strong>AI × コード</strong><span>Claude Codeと共作</span></li>
+      </ul>
+      <div class="hero-actions">
+        <a class="button button-lamp" href="#works">4つのシステムを見る <span aria-hidden="true">↓</span></a>
+        <a class="text-link text-link-night" href="#approach">作り方を読む <span aria-hidden="true">→</span></a>
       </div>
     </div>
+    <div class="berg" role="img" aria-label="悩みの氷山の図。水面の上は顕在的な悩み、水面の下は潜在的な悩み">
+      <svg viewBox="0 0 400 420" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="30%" r="60%"><stop offset="0" stop-color="#F2C14E" stop-opacity=".35"/><stop offset="1" stop-color="#F2C14E" stop-opacity="0"/></radialGradient>
+        </defs>
+        <ellipse cx="200" cy="100" rx="150" ry="90" fill="url(#glow)"/>
+        <polygon points="170,58 205,40 240,70 262,143 138,143" fill="#F6F1E6"/>
+        <polygon points="138,143 262,143 318,210 336,300 280,382 170,398 92,340 70,250" fill="#1B2C4F"/>
+        <polygon points="138,143 262,143 300,200 250,180 180,196 110,200" fill="#2a4170" opacity=".8"/>
+        <path d="M0 143 Q 50 136 100 143 T 200 143 T 300 143 T 400 143" fill="none" stroke="#E9D9B0" stroke-width="1.2" opacity=".7"/>
+      </svg>
+      <div class="tag t-top"><b>顕在的な悩み</b>「手間がかかる」「時間がない」<br>本人が口にしている困りごと</div>
+      <span class="wl">— WATERLINE —</span>
+      <div class="tag t-bot"><b>潜在的な悩み</b>属人化、信用リスク、気づけない損失。<br>まだ言葉になっていない、本当の課題</div>
+    </div>
+  </div>
+</section>
 
-    <div class="index" id="works">
-      <a href="#seat"><span class="n mono"><span class="dotc" style="background:var(--seat)"></span>01 / 飲食店</span><span class="t">お店の席配置システム</span><span class="w">紙の座席表を、スマホの中へ。</span></a>
-      <a href="#sales"><span class="n mono"><span class="dotc" style="background:var(--sales)"></span>02 / BtoB営業</span><span class="t">営業メールリスト</span><span class="w">「送れるリスト」ではなく「迷惑をかけないリスト」。</span></a>
-      <a href="#hp"><span class="n mono"><span class="dotc" style="background:var(--hp)"></span>03 / Web制作営業</span><span class="t">近所のHP勝手に作りました</span><span class="w">完成形を先に見せる営業の仕組み。</span></a>
-      <a href="#fin"><span class="n mono"><span class="dotc" style="background:var(--fin)"></span>04 / 経営管理</span><span class="t">月次試算表ツール</span><span class="w">数字の羅列を、会議で使える言葉に。</span></a>
+<!-- WORKS INDEX -->
+<section class="works" id="works" aria-labelledby="works-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <p class="kicker"><span>01</span>制作実績</p>
+        <h2 id="works-title">分野はばらばら。<br>出発点は、いつも同じ。</h2>
+      </div>
+      <p>飲食店、営業、Web制作、財務。それぞれの現場で見つけた「困った」を、使う人の仕事の流れに合わせた道具にしました。</p>
+    </div>
+    <div class="index">
+      <a href="#seat" class="reveal" style="--c:var(--seat)"><span class="n mono"><b>01</b>飲食店</span><span class="t">お店の席配置システム</span><span class="w">紙の座席表を、スマホの中へ。</span><span class="go">くわしく見る ↓</span></a>
+      <a href="#sales" class="reveal" style="--c:var(--sales)"><span class="n mono"><b>02</b>BtoB営業</span><span class="t">営業メールリスト</span><span class="w">「送れるリスト」ではなく「迷惑をかけないリスト」。</span><span class="go">くわしく見る ↓</span></a>
+      <a href="#hp" class="reveal" style="--c:var(--hp)"><span class="n mono"><b>03</b>Web制作営業</span><span class="t">近所のHP勝手に作りました</span><span class="w">完成形を先に見せる営業の仕組み。</span><span class="go">くわしく見る ↓</span></a>
+      <a href="#fin" class="reveal" style="--c:var(--fin)"><span class="n mono"><b>04</b>経営管理</span><span class="t">月次試算表ツール</span><span class="w">数字の羅列を、会議で使える言葉に。</span><span class="go">くわしく見る ↓</span></a>
     </div>
   </div>
 </section>
 
 <!-- HOW TO READ -->
-<section class="howto">
+<section class="howto" aria-labelledby="howto-title">
   <div class="wrap howto-grid">
-    <h2>各システムの<br>紹介の読み方</h2>
-    <div class="legend">
+    <div class="reveal">
+      <p class="kicker"><span>02</span>読み方</p>
+      <h2 id="howto-title">各システムの<br>紹介の読み方</h2>
+    </div>
+    <div class="legend reveal">
       <div><span class="k mono">WHO</span><b>誰のためのものか</b><p>主な使い手と、その人が置かれている状況です。</p></div>
       <div><span class="k mono">SURFACE</span><b>顕在的な悩み</b><p>本人が自覚していて、口に出している困りごとです。</p></div>
-      <div style="background:var(--water);color:#e8eef3;border-color:var(--water)"><span class="k mono" style="color:#9fc2dc">DEEP</span><b>潜在的な悩み</b><p style="color:#c9d6e2">本人はまだ気づいていないものの、実はこのシステムで解決している課題です。</p></div>
+      <div class="dk"><span class="k mono">DEEP</span><b>潜在的な悩み</b><p>本人はまだ気づいていないものの、実はこのシステムで解決している課題です。</p></div>
     </div>
   </div>
 </section>
@@ -336,7 +434,7 @@ footer a{text-decoration:none}
 <!-- CASE 01 SEAT -->
 <section class="case" id="seat">
   <div class="wrap">
-    <div class="case-head">
+    <div class="case-head reveal">
       <div>
         <div class="case-no"><span class="big">01</span><span class="mono">RESTAURANT<br>OPERATIONS</span></div>
         <h2><span class="ln">席と予約を、</span><br><span class="ln">スマホひとつで見渡す。</span></h2>
@@ -348,7 +446,7 @@ footer a{text-decoration:none}
     </div>
 
     <div class="case-body">
-      <div class="visual" aria-hidden="true">
+      <div class="visual reveal" aria-hidden="true">
         <div class="phone"><div class="screen">
           <div class="bar">席配置 <span>今夜 18:00〜</span></div>
           <div class="tb on jl" style="left:12px;top:52px">T1<span class="nm">田中様 8名</span><i style="left:8px;bottom:-4px"></i><i style="left:30px;bottom:-4px"></i><i style="left:8px;top:-4px"></i><i style="left:30px;top:-4px"></i></div>
@@ -363,7 +461,7 @@ footer a{text-decoration:none}
         <span class="cap">実際の画面を再現したイメージ（予約名は架空）</span>
       </div>
 
-      <div class="what">
+      <div class="what reveal">
         <h3>WHAT IT IS</h3>
         <p>6卓×4席のフロアをスマホに再現する、1枚のHTMLで動くアプリです。アプリストアからのインストールも、アカウント登録も、月額料金もかかりません。</p>
         <ul class="feat">
@@ -376,12 +474,12 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="persona">
+    <div class="persona reveal">
       <div class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 11h16M6 11V8a6 6 0 0 1 12 0v3M5 11l1 9h12l1-9"/></svg></div>
       <div><b>個人経営の居酒屋・小料理屋の店主とホールスタッフ</b><p>席数は20〜30席ほど。予約は電話や来店時に口頭で受けています。専用の予約システムは導入しておらず、座席表は紙やホワイトボードで管理しています。</p></div>
     </div>
 
-    <div class="pains">
+    <div class="pains reveal">
       <div class="pain surface">
         <h4>顕在的な悩み</h4><p class="hint">店主がよく口にしていそうなこと</p>
         <ul>
@@ -400,7 +498,7 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="ba">
+    <div class="ba reveal">
       <div class="col"><span class="lbl">BEFORE</span><p>紙の座席表に消しゴムで書き直す。合体した席は頭の中で覚えておく。</p></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="col after"><span class="lbl">AFTER</span><p>スマホを開けば今夜のフロアが見える。誰が見ても同じ状況がわかり、費用は0円。</p></div>
@@ -417,7 +515,7 @@ footer a{text-decoration:none}
 <!-- CASE 02 SALES -->
 <section class="case" id="sales">
   <div class="wrap">
-    <div class="case-head">
+    <div class="case-head reveal">
       <div>
         <div class="case-no"><span class="big">02</span><span class="mono">B2B SALES<br>RESEARCH</span></div>
         <h2><span class="ln">「送れるリスト」ではなく、</span><br><span class="ln">「迷惑をかけないリスト」。</span></h2>
@@ -429,7 +527,7 @@ footer a{text-decoration:none}
     </div>
 
     <div class="case-body">
-      <div class="visual" aria-hidden="true">
+      <div class="visual reveal" aria-hidden="true">
         <div class="sheet">
           <div class="tabs"><span>はじめに</span><span>集計</span><span class="on">全施設リスト</span><span>メール窓口</span></div>
           <table>
@@ -446,7 +544,7 @@ footer a{text-decoration:none}
         <span class="cap">構成を説明するためのイメージ（施設名は架空）</span>
       </div>
 
-      <div class="what">
+      <div class="what reveal">
         <h3>WHAT IT IS</h3>
         <p>伊豆の11市町にある旅館・ホテルを、エージェントで市町村ごとに並行して調査しました。連絡窓口、料理の提供スタイル、提案の仮説までを1冊のExcelにまとめ、施設ごとに切り口の違う3種類のメール文面を添えています。</p>
         <ul class="feat">
@@ -459,12 +557,12 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="persona">
+    <div class="persona reveal">
       <div class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
       <div><b>専任の営業担当がいない、少人数のBtoBサービス会社の役員</b><p>料理の腕と実績はあるのに、知らない地域で新しい取引先を開拓するノウハウと時間が足りません。経営者自身が本業の合間に営業しています。</p></div>
     </div>
 
-    <div class="pains">
+    <div class="pains reveal">
       <div class="pain surface">
         <h4>顕在的な悩み</h4><p class="hint">役員がよく口にしていそうなこと</p>
         <ul>
@@ -484,7 +582,7 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="ba">
+    <div class="ba reveal">
       <div class="col"><span class="lbl">BEFORE</span><p>検索しながら手探りで送り先を探し、同じ文面を送る。誰に何を送ったかは記憶頼み。</p></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="col after"><span class="lbl">AFTER</span><p>優先度の高い施設から、相手に合った文面で送る。送った記録も停止した記録も1冊に残る。</p></div>
@@ -500,7 +598,7 @@ footer a{text-decoration:none}
 <!-- CASE 03 HP -->
 <section class="case" id="hp">
   <div class="wrap">
-    <div class="case-head">
+    <div class="case-head reveal">
       <div>
         <div class="case-no"><span class="big">03</span><span class="mono">WEB SALES<br>PIPELINE</span></div>
         <h2><span class="ln">「作りませんか」ではなく、</span><br><span class="ln">「作ってみました」から始める。</span></h2>
@@ -512,7 +610,7 @@ footer a{text-decoration:none}
     </div>
 
     <div class="case-body">
-      <div class="visual" aria-hidden="true">
+      <div class="visual reveal" aria-hidden="true">
         <div class="hpmock">
           <div class="site">
             <div class="chrome"><i></i><i></i><i></i><span>preview.html</span></div>
@@ -531,7 +629,7 @@ footer a{text-decoration:none}
         <span class="cap">生成されるサンプルHPと提案書のイメージ（税別）</span>
       </div>
 
-      <div class="what">
+      <div class="what reveal">
         <h3>WHAT IT IS</h3>
         <p>地域と業種を指定して候補を集めるところから、受注後の正式版の生成までを、1つのメニューで進められます。会社ごとに「カルテ」フォルダを作り、情報・調査・営業履歴・成果物をまとめて管理します。</p>
         <ul class="feat">
@@ -544,12 +642,12 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="persona">
+    <div class="persona reveal">
       <div class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg></div>
       <div><b>地域でWeb制作の営業をする個人・副業の制作者</b><p>その先にいる恩恵の受け手は、HPを持っていない町の工務店や塗装店です。腕は確かでも、ネットで探すお客様には見つけてもらえていません。</p></div>
     </div>
 
-    <div class="pains">
+    <div class="pains reveal">
       <div class="pain surface">
         <h4>顕在的な悩み</h4><p class="hint">制作者がよく口にしていそうなこと</p>
         <ul>
@@ -569,7 +667,7 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="ba">
+    <div class="ba reveal">
       <div class="col"><span class="lbl">BEFORE</span><p>口頭で「HPがあると便利ですよ」と説明する。資料は毎回手作りで、進捗はメモ帳に。</p></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="col after"><span class="lbl">AFTER</span><p>「御社のHP、こんな感じになります」と画面を見せられる。案件ごとの状況と収支が一覧で見える。</p></div>
@@ -585,7 +683,7 @@ footer a{text-decoration:none}
 <!-- CASE 04 FIN -->
 <section class="case" id="fin">
   <div class="wrap">
-    <div class="case-head">
+    <div class="case-head reveal">
       <div>
         <div class="case-no"><span class="big">04</span><span class="mono">FINANCIAL<br>REPORTING</span></div>
         <h2><span class="ln">数字の羅列を、</span><br><span class="ln">会議で使える言葉に。</span></h2>
@@ -597,7 +695,7 @@ footer a{text-decoration:none}
     </div>
 
     <div class="case-body">
-      <div class="visual" aria-hidden="true">
+      <div class="visual reveal" aria-hidden="true">
         <div class="report">
           <div class="rt"><b>拠点別 経営サマリー</b><span>SAMPLE / 4–6月</span></div>
           <div class="kpis">
@@ -612,7 +710,7 @@ footer a{text-decoration:none}
         <span class="cap">レポートの構成イメージ（数値は説明用のサンプル）</span>
       </div>
 
-      <div class="what">
+      <div class="what reveal">
         <h3>WHAT IT IS</h3>
         <p>会計ソフトから出力したままのXLSファイル（旧形式・Shift_JIS）をそのまま読み込みます。数字の拾い出しと色分けはプログラムが行い、その数字が何を意味し、何をすべきかはClaudeが言葉にします。</p>
         <ul class="feat">
@@ -625,12 +723,12 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="persona">
+    <div class="persona reveal">
       <div class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
       <div><b>社会福祉法人・介護事業所の経営管理担当者</b><p>毎月の経営会議で数字を説明する立場にあります。聞き手は施設長や理事など、介護の現場には詳しくても財務諸表を読み慣れていない人たちです。</p></div>
     </div>
 
-    <div class="pains">
+    <div class="pains reveal">
       <div class="pain surface">
         <h4>顕在的な悩み</h4><p class="hint">担当者がよく口にしていそうなこと</p>
         <ul>
@@ -650,7 +748,7 @@ footer a{text-decoration:none}
       </div>
     </div>
 
-    <div class="ba">
+    <div class="ba reveal">
       <div class="col"><span class="lbl">BEFORE</span><p>試算表を印刷して蛍光ペンで印をつけ、会議では数字を読み上げるだけ。</p></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="col after"><span class="lbl">AFTER</span><p>ファイルを置いて実行すれば、色分けされた表と「次に打つ手」まで書かれたレポートができる。</p></div>
@@ -663,31 +761,53 @@ footer a{text-decoration:none}
   </div>
 </section>
 
-<!-- APPROACH -->
-<section class="approach" id="approach">
+<!-- BRIDGE -->
+<section class="bridge" aria-label="まとめ">
   <div class="wrap">
-    <p class="eyebrow mono">HOW I BUILD</p>
-    <h2>作る前に、<br>水面の下を見る。</h2>
+    <p class="reveal">4つの道具に共通しているのは、<br><strong>口にした悩みの、その下まで届くこと</strong>。</p>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section class="approach" id="approach" aria-labelledby="approach-title">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="kicker"><span>03</span>作り方</p>
+      <h2 id="approach-title">作る前に、<br>水面の下を見る。</h2>
+    </div>
     <div class="steps">
-      <div class="step"><span class="mono">01 / LISTEN</span><h3>口にした悩みの理由を聞く</h3><p>「面倒」の裏には、属人化や機会損失が隠れていることが多いものです。表面の要望に応えるだけでなく、その理由まで掘り下げてから作り始めます。</p></div>
-      <div class="step"><span class="mono">02 / HONEST</span><h3>確かなことだけを載せる</h3><p>架空の実績を生成しない。到達を保証しない。できないことは書く。道具の信用は、使う人の信用に直結するからです。</p></div>
-      <div class="step"><span class="mono">03 / FIT</span><h3>今の仕事の流れに合わせる</h3><p>スマホで開くだけ、ファイルを置くだけ、メニューから選ぶだけ。新しい習慣を強いず、今の仕事にそのまま入り込む形を選びます。</p></div>
+      <div class="step reveal"><span class="mono">01 / LISTEN</span><h3>口にした悩みの理由を聞く</h3><p>「面倒」の裏には、属人化や機会損失が隠れていることが多いものです。表面の要望に応えるだけでなく、その理由まで掘り下げてから作り始めます。</p></div>
+      <div class="step reveal"><span class="mono">02 / HONEST</span><h3>確かなことだけを載せる</h3><p>架空の実績を生成しない。到達を保証しない。できないことは書く。道具の信用は、使う人の信用に直結するからです。</p></div>
+      <div class="step reveal"><span class="mono">03 / FIT</span><h3>今の仕事の流れに合わせる</h3><p>スマホで開くだけ、ファイルを置くだけ、メニューから選ぶだけ。新しい習慣を強いず、今の仕事にそのまま入り込む形を選びます。</p></div>
     </div>
   </div>
 </section>
 
 <!-- ABOUT -->
-<section class="about" id="about">
+<section class="about" id="about" aria-labelledby="about-title">
   <div class="wrap about-grid">
-    <div>
-      <p class="eyebrow mono">ABOUT</p>
-      <h2>現場で働く人の目線で、<br>使える道具を作っています。</h2>
+    <div class="reveal">
+      <p class="kicker"><span>04</span>プロフィール</p>
+      <h2 id="about-title">現場で働く人の目線で、<br>使える道具を作っています。</h2>
       <div class="profile"><div class="av">g.</div><div><b>gorie</b><small>経営管理 ／ 業務改善ツールの制作</small></div></div>
     </div>
-    <div>
+    <div class="reveal">
       <p>介護福祉法人で経営管理の仕事をしながら、日々の業務や知人の商売で見つけた「困った」を、AIとコードを使って仕組みにしています。</p>
       <p>エンジニアとしての経歴はありません。Claude Codeを相棒に、要件の整理から実装・検証までを一つずつ形にしてきました。だからこそ、<strong>専門用語ではなく、使う人の言葉で困りごとを聞くこと</strong>を大切にしています。</p>
       <p>飲食店、営業、Web制作、財務。分野はばらばらですが、出発点はいつも同じです。「この人は、本当は何に困っているんだろう」。</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL（夜） -->
+<section class="final on-night" aria-labelledby="final-title">
+  <div class="wrap">
+    <p class="kicker"><span>Next</span>実際に触ってみる</p>
+    <h2 id="final-title">水面の下にある「困った」を、<br><em>灯りの下</em>へ。</h2>
+    <p class="sub">席配置システムは、ブラウザでそのまま動かせます。ほかの制作物のコードはGitHubで公開しています。</p>
+    <div class="acts">
+      <a class="button button-lamp" href="demo/seat.html" target="_blank" rel="noopener">席配置システムを触る <span aria-hidden="true">↗</span></a>
+      <a class="text-link text-link-night" href="https://github.com/gorie4344-ai" target="_blank" rel="noopener">GitHubを見る <span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </section>
@@ -700,5 +820,75 @@ footer a{text-decoration:none}
     <a href="#top">ページの先頭へ ↑</a>
   </div>
 </footer>
+
+<script>
+/* 演出のみ。JSがなくても内容とリンクはすべて使えます */
+(() => {
+  'use strict';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const header = document.getElementById('header');
+  const hero = document.querySelector('.hero');
+  const bar = document.getElementById('progress');
+
+  // ヘッダー：夜（ヒーロー・最後）の上では紺、本文の上では明るく
+  const nights = [...document.querySelectorAll('.on-night')];
+  function onScroll() {
+    const y = 36;
+    const overNight = nights.some(s => { const r = s.getBoundingClientRect(); return r.top <= y && r.bottom > y; });
+    header.classList.toggle('is-light', !overNight);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+
+  // 出てくる動き
+  if (!reduce.matches && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('motion-ready');
+    const items = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.remove('is-pending'); io.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -8% 0px' });
+    items.forEach(el => { if (el.getBoundingClientRect().top > innerHeight * .92) { el.classList.add('is-pending'); io.observe(el); } });
+  }
+
+  // ヒーローの灯り：ゆっくり昇る小さな光
+  const canvas = document.getElementById('heroLights');
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d');
+    const ratio = Math.min(devicePixelRatio || 1, 2);
+    let pts = [], w = 0, h = 0, running = false, frame = 0;
+    function resize() {
+      const r = canvas.getBoundingClientRect(); w = r.width; h = r.height;
+      canvas.width = Math.round(w * ratio); canvas.height = Math.round(h * ratio);
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const n = Math.min(32, Math.round(w * h / 38000));
+      pts = Array.from({ length: n }, () => ({ x: Math.random() * w, y: Math.random() * h, r: .6 + Math.random() * 1.8, vy: -(.05 + Math.random() * .18), vx: (Math.random() - .5) * .08, ph: Math.random() * 6.28 }));
+    }
+    function draw(t) {
+      ctx.clearRect(0, 0, w, h);
+      pts.forEach(p => {
+        const glow = .55 + .45 * Math.sin(t / 900 + p.ph);
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 7);
+        g.addColorStop(0, `rgba(255,226,150,${.85 * glow})`); g.addColorStop(1, 'rgba(242,193,78,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 7, 0, 6.29); ctx.fill();
+      });
+    }
+    function step(t) {
+      if (!running) return;
+      pts.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; } });
+      draw(t); frame = requestAnimationFrame(step);
+    }
+    const start = () => { if (!running && !reduce.matches && !document.hidden) { running = true; frame = requestAnimationFrame(step); } };
+    const stop = () => { running = false; cancelAnimationFrame(frame); };
+    resize(); draw(0);
+    addEventListener('resize', () => { resize(); draw(0); }, { passive: true });
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(hero);
+    else start();
+  }
+})();
+</script>
 </body>
 </html>
